@@ -3,8 +3,6 @@ let playerScore = 0;
 let computerScore = 0;
 let roundResult;
 
-
-
 //---COMPARACION Y RESULTADO DE LA RONDA---//
 function playRound(playerSelection, computerSelection) {
 
@@ -33,56 +31,70 @@ function playRound(playerSelection, computerSelection) {
                 
                     }
 
-    return roundResult;
+    const resultDiv = document.querySelector("#result");
+    resultDiv.textContent = roundResult;
 
 }
 
 //---HACER JUEGO DE 5 RONDAS QUE LLEVE RECUENTO DE PUNTAJE Y DE GANADOR---//
 function playGame() {
-    
     let winner;
-    let valor_de_playRound;
 
     for (let i = 1; i <= 5; i++) {
-        
         const playerSelection = selection();
-        const computerSelection = getComputerChoice();
-        valor_de_playRound = playRound(playerSelection, computerSelection);
+        if (playerSelection === null) {
+            return; // Si la selección es nula, se cancela la operación.
+        }
 
-        console.log(valor_de_playRound);
+        const computerSelection = getComputerChoice();
+        playRound(playerSelection, computerSelection);
+
+        // Muestra la puntuación en curso
+        const scoreDiv = document.querySelector("#score");
+        scoreDiv.textContent = `Jugador: ${playerScore} - Computadora: ${computerScore}`;
     }
 
     if (playerScore > computerScore) {
-        winner = "Ganaste la batalla!"
+        winner = "¡Ganaste la batalla!";
     } else if (playerScore < computerScore) {
-        winner = "Perdiste la batalla :,("
-    } else if (playerScore === computerScore) {
-        winner = "La partida queda en empate!"
+        winner = "¡Perdiste la batalla :,(";
+    } else {
+        winner = "La partida queda en empate.";
     }
-    
-    return winner;
+
+    // Muestra al ganador
+    const resultDiv = document.querySelector("#result");
+    resultDiv.textContent = winner;
 }
 
 //---SELECCION DE JUGADOR IGNORANDO MAYUS Y MINUS---//
-function selection() {  
+function selection() {
 
-    let str = prompt("Seleccione su jugada");
+    let str;
+
+    if (piedra.addEventListener("click", () => str = "Piedra")) {
+        str = str.toLowerCase();
+        let upper = str.charAt(0).toUpperCase();
+        let seleccion = upper + str.slice(1);
+        return seleccion;
+        } else if (papel.addEventListener("click", () => str = "Papel")) {
+            str = str.toLowerCase();
+            let upper = str.charAt(0).toUpperCase();
+            let seleccion = upper + str.slice(1);
+            return seleccion;
+            } else if (tijeras.addEventListener("click", () => str = "Tijeras")) {
+                str = str.toLowerCase();
+                let upper = str.charAt(0).toUpperCase();
+                let seleccion = upper + str.slice(1);
+                return seleccion;
+            }
 
     if (str === null) {
 
         console.log("Operacion cancelada")
         return null;
         
-    } else {
-
-        str = str.toLowerCase();
-        
     }
-    
-
-    let upper = str.charAt(0).toUpperCase();
-    let seleccion = upper + str.slice(1);
-    return seleccion;
 
 }
 
@@ -95,4 +107,39 @@ function getComputerChoice(datos) {
 
 }
   
-console.log(playGame());
+
+
+//---TODO LO GRAFICO---//
+
+const piedra = document.querySelector(".piedra");
+const papel = document.querySelector(".papel");
+const tijeras = document.querySelector(".tijeras");
+const partida = document.querySelector(".partidaBoton");
+
+const resultDiv = document.createElement("div");
+resultDiv.id = "result";
+contenedor.appendChild(resultDiv);
+
+const scoreDiv = document.createElement("div");
+scoreDiv.id = "score";
+contenedor.appendChild(scoreDiv);
+
+piedra.addEventListener("click", () => {
+    const playerSelection = "Piedra";
+    const computerSelection = getComputerChoice()
+    playRound(playerSelection, computerSelection);
+  });
+  
+  papel.addEventListener("click", () => {
+    const playerSelection = "Papel";
+    const computerSelection = getComputerChoice();
+    playRound(playerSelection, computerSelection);
+  });
+  
+  tijeras.addEventListener("click", () => {
+    const playerSelection = "Tijeras";
+    const computerSelection = getComputerChoice();
+    playRound(playerSelection, computerSelection);
+  });
+
+  partida.addEventListener("click", playGame)
